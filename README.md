@@ -9,9 +9,9 @@
 </p>
 
 <p align="center">
-  <img alt="Windows 10/11" src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4">
-  <img alt="AutoHotkey v2" src="https://img.shields.io/badge/AutoHotkey-v2-334455">
-  <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-a855f7">
+  <a href="#one-click-setup"><img alt="Windows 10/11" src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4"></a>
+  <a href="https://www.autohotkey.com"><img alt="AutoHotkey v2" src="https://img.shields.io/badge/AutoHotkey-v2-334455"></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-a855f7"></a>
 </p>
 
 ---
