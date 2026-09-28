@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 420" width="1000" height="420" role="img" aria-label="How UpsideDown works: the hotkey on the PC sends a DDC/CI command over the video cable, and the monitor switches to the other computer's input">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/>
+    </marker>
+    <style>
+      text { font-family: "Segoe UI", Inter, Helvetica, Arial, sans-serif; }
+      .title { font-size: 20px; font-weight: 700; fill: #ffffff; }
+      .sub   { font-size: 15px; fill: #b8bade; }
+      .tag   { font-size: 13px; font-weight: 600; fill: #0f1024; }
+      .box   { fill: #1b1c38; stroke: #3d3f6b; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect width="1000" height="420" rx="20" fill="#0f1024"/>
+
+  <!-- 1. Keyboard -->
+  <g transform="translate(40 60)">
+    <rect class="box" width="230" height="130" rx="14"/>
+    <circle cx="28" cy="28" r="16" fill="#22d3ee"/><text x="28" y="33" text-anchor="middle" class="tag">1</text>
+    <text x="56" y="34" class="title">You press</text>
+    <g transform="translate(28 58)">
+      <rect width="72" height="42" rx="8" fill="#2a2b4d" stroke="#4b4d7a" stroke-width="2"/>
+      <text x="36" y="27" text-anchor="middle" font-size="16" font-weight="600" fill="#fff">Ctrl</text>
+      <text x="88" y="28" text-anchor="middle" font-size="20" fill="#8b8db8">+</text>
+      <rect x="104" width="72" height="42" rx="8" fill="#2a2b4d" stroke="#4b4d7a" stroke-width="2"/>
+      <text x="140" y="27" text-anchor="middle" font-size="16" font-weight="600" fill="#fff">F12</text>
+    </g>
+  </g>
+
+  <!-- 2. UpsideDown on the PC -->
+  <g transform="translate(40 240)">
+    <rect class="box" width="230" height="130" rx="14"/>
+    <circle cx="28" cy="28" r="16" fill="#22d3ee"/><text x="28" y="33" text-anchor="middle" class="tag">2</text>
+    <text x="56" y="34" class="title">UpsideDown</text>
+    <text x="28" y="68" class="sub">asks the monitor its input,</text>
+    <text x="28" y="90" class="sub">then sends the other one</text>
+    <text x="28" y="112" class="sub">(~0.1 s, runs on your PC)</text>
+  </g>
+  <path d="M155 190 V 240" stroke="#a78bfa" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- DDC/CI wire -->
+  <path d="M270 305 C 360 305, 360 200, 440 200" stroke="#a78bfa" stroke-width="3" stroke-dasharray="8 7" fill="none" marker-end="url(#arrow)"/>
+  <g transform="translate(294 322)">
+    <rect width="118" height="28" rx="14" fill="#a78bfa"/>
+    <text x="59" y="19" text-anchor="middle" class="tag">DDC/CI  0x60</text>
+  </g>
+  <text x="296" y="372" class="sub" font-size="13">over the video cable</text>
+
+  <!-- 3. Monitor -->
+  <g transform="translate(440 70)">
+    <circle cx="-16" cy="-16" r="16" fill="#22d3ee"/><text x="-16" y="-11" text-anchor="middle" class="tag">3</text>
+    <rect width="260" height="170" rx="14" fill="#0b0c1a" stroke="#4b4d7a" stroke-width="3"/>
+    <rect x="12" y="12" width="236" height="146" rx="8" fill="#f472b6" opacity="0.9"/>
+    <rect x="12" y="12" width="236" height="146" rx="8" fill="#a855f7" opacity="0.45"/>
+    <text x="130" y="80" text-anchor="middle" class="title">Monitor switches</text>
+    <text x="130" y="106" text-anchor="middle" font-size="15" fill="#fff">HDMI 1  →  HDMI 2</text>
+    <rect x="105" y="170" width="50" height="26" fill="#2a2b4d"/>
+    <rect x="70" y="196" width="120" height="10" rx="5" fill="#2a2b4d"/>
+  </g>
+
+  <!-- Computers -->
+  <g transform="translate(790 60)">
+    <rect class="box" width="170" height="110" rx="14"/>
+    <g transform="translate(24 22)" fill="#22d3ee">
+      <rect width="18" height="18" rx="2"/><rect x="21" width="18" height="18" rx="2"/>
+      <rect y="21" width="18" height="18" rx="2"/><rect x="21" y="21" width="18" height="18" rx="2"/>
+    </g>
+    <text x="76" y="46" class="title">PC</text>
+    <text x="24" y="92" class="sub" font-size="13">runs UpsideDown</text>
+  </g>
+  <g transform="translate(790 240)">
+    <rect class="box" width="170" height="110" rx="14"/>
+    <g transform="translate(22 26)" fill="none" stroke="#f472b6" stroke-width="4" stroke-linejoin="round">
+      <rect x="4" y="0" width="36" height="24" rx="3"/><path d="M0 31 H44"/>
+    </g>
+    <text x="76" y="46" class="title">Mac</text>
+    <text x="24" y="92" class="sub" font-size="13">or laptop, console…</text>
+  </g>
+  <path d="M790 115 C 740 115, 740 150, 700 150" stroke="#22d3ee" stroke-width="3" fill="none"/>
+  <path d="M790 295 C 740 295, 740 190, 700 190" stroke="#f472b6" stroke-width="3" fill="none"/>
+  <text x="712" y="118" class="sub" font-size="12">HDMI 1</text>
+  <text x="712" y="298" class="sub" font-size="12">HDMI 2</text>
+</svg>
