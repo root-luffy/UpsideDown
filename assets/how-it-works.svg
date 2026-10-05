@@ -67,7 +67,8 @@
       <rect y="21" width="18" height="18" rx="2"/><rect x="21" y="21" width="18" height="18" rx="2"/>
     </g>
     <text x="76" y="46" class="title">PC</text>
-    <text x="24" y="92" class="sub" font-size="13">runs UpsideDown</text>
+    <text x="24" y="82" class="sub" font-size="13">runs UpsideDown</text>
+    <text x="24" y="100" class="sub" font-size="13">Windows or Linux</text>
   </g>
   <g transform="translate(790 240)">
     <rect class="box" width="170" height="110" rx="14"/>

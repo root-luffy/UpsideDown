@@ -41,6 +41,14 @@
     <text x="188" y="33" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" font-weight="600" fill="#ffffff">F12</text>
   </g>
 
+  <!-- Platforms -->
+  <g transform="translate(356 270)" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="16" font-weight="600">
+    <rect width="104" height="30" rx="15" fill="none" stroke="#22d3ee" stroke-width="2"/>
+    <text x="52" y="21" text-anchor="middle" fill="#22d3ee">Windows</text>
+    <rect x="116" width="84" height="30" rx="15" fill="none" stroke="#a78bfa" stroke-width="2"/>
+    <text x="158" y="21" text-anchor="middle" fill="#a78bfa">Linux</text>
+  </g>
+
   <!-- Monitor with split screen -->
   <g transform="translate(700 70)">
     <rect x="0" y="0" width="400" height="236" rx="16" fill="#0b0c1a" stroke="#4b4d7a" stroke-width="3"/>

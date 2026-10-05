@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 420" width="1000" height="420" role="img" aria-label="UpsideDown on Linux: run bash install.sh once, then your desktop's Ctrl+F12 shortcut runs upsidedown, which sends the DDC/CI command to the monitor with ddcutil">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#a78bfa"/>
+    </marker>
+    <style>
+      text  { font-family: "Segoe UI", Inter, Helvetica, Arial, sans-serif; }
+      .mono { font-family: "DejaVu Sans Mono", Menlo, Consolas, "Liberation Mono", monospace; font-size: 13.5px; fill: #c7c9e8; white-space: pre; }
+      .cmd  { fill: #ffffff; font-weight: 700; }
+      .step { fill: #22d3ee; }
+      .ok   { fill: #4ade80; }
+      .dim  { fill: #8b8db8; }
+      .title { font-size: 20px; font-weight: 700; fill: #ffffff; }
+      .sub   { font-size: 14px; fill: #b8bade; }
+      .tag   { font-size: 13px; font-weight: 600; fill: #0f1024; }
+      .box   { fill: #1b1c38; stroke: #3d3f6b; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect width="1000" height="420" rx="20" fill="#0f1024"/>
+
+  <!-- Terminal: one-time setup -->
+  <g transform="translate(36 36)">
+    <rect width="560" height="334" rx="14" fill="#0b0c1a" stroke="#3d3f6b" stroke-width="2"/>
+    <path d="M0 14 a14 14 0 0 1 14 -14 H546 a14 14 0 0 1 14 14 V36 H0 z" fill="#1b1c38"/>
+    <circle cx="22" cy="18" r="6" fill="#f472b6"/>
+    <circle cx="42" cy="18" r="6" fill="#a78bfa"/>
+    <circle cx="62" cy="18" r="6" fill="#22d3ee"/>
+    <text x="280" y="23" text-anchor="middle" class="sub" font-size="13">once: setup</text>
+
+    <g transform="translate(20 66)" xml:space="preserve">
+      <text y="0"   class="mono"><tspan class="step">$</tspan> <tspan class="cmd">bash install.sh</tspan></text>
+      <text y="26"  class="mono step">&gt; Checking for ddcutil</text>
+      <text y="46"  class="mono ok">  Found ddcutil 3.0.2</text>
+      <text y="72"  class="mono step">&gt; Talking to your monitor (DDC/CI)</text>
+      <text y="92"  class="mono ok">  Monitor: ED270 Z (I2C bus 10)</text>
+      <text y="112" class="mono ok">  This PC is on input 15  (usually DisplayPort 1)</text>
+      <text y="138" class="mono step">&gt; Which input is your other computer on?</text>
+      <text y="158" class="mono">  [1] input 17  (usually HDMI 1)</text>
+      <text y="178" class="mono">  Did your other computer show up? [y/n] <tspan class="cmd">y</tspan></text>
+      <text y="204" class="mono step">&gt; Setting up the &lt;Control&gt;F12 shortcut</text>
+      <text y="224" class="mono ok">  Bound in GNOME Settings &gt; Keyboard</text>
+      <text y="252" class="mono ok" font-weight="700">  Done! Press Ctrl+F12 to flip your monitor.</text>
+    </g>
+  </g>
+
+  <!-- Every flip -->
+  <text x="650" y="40" class="sub" font-size="13" fill="#8b8db8">every flip</text>
+
+  <g transform="translate(650 56)">
+    <rect class="box" width="314" height="84" rx="14"/>
+    <circle cx="28" cy="28" r="16" fill="#22d3ee"/><text x="28" y="33" text-anchor="middle" class="tag">1</text>
+    <text x="56" y="34" class="title">Ctrl + F12</text>
+    <text x="28" y="64" class="sub">your desktop's own shortcut</text>
+  </g>
+  <path d="M807 140 V 172" stroke="#a78bfa" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+
+  <g transform="translate(650 176)">
+    <rect class="box" width="314" height="84" rx="14"/>
+    <circle cx="28" cy="28" r="16" fill="#22d3ee"/><text x="28" y="33" text-anchor="middle" class="tag">2</text>
+    <text x="56" y="34" class="title">upsidedown</text>
+    <text x="28" y="64" class="sub">runs, flips, exits. No background app.</text>
+  </g>
+  <path d="M807 260 V 292" stroke="#a78bfa" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+
+  <g transform="translate(650 296)">
+    <rect class="box" width="314" height="88" rx="14"/>
+    <circle cx="28" cy="28" r="16" fill="#22d3ee"/><text x="28" y="33" text-anchor="middle" class="tag">3</text>
+    <text x="56" y="34" class="title">ddcutil → monitor</text>
+    <g transform="translate(28 50)">
+      <rect width="118" height="26" rx="13" fill="#a78bfa"/>
+      <text x="59" y="18" text-anchor="middle" class="tag">DDC/CI  0x60</text>
+    </g>
+    <text x="158" y="68" class="sub" font-size="13">via /dev/i2c-N</text>
+  </g>
+
+  <text x="36" y="406" class="sub" font-size="12" fill="#8b8db8">Works on X11 and Wayland: GNOME and Xfce are set up for you; KDE, Sway, Hyprland and others take one line.</text>
+</svg>

@@ -4,3 +4,4 @@
 *.ini  text eol=crlf
 *.svg  text eol=lf
 *.md   text eol=lf
+*.sh   text eol=lf
