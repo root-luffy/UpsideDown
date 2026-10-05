@@ -15,13 +15,15 @@ STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/upsidedown-$(id -u).last"
 # ini KEY DEFAULT: read KEY=value from the config, ignoring ; comments.
 ini() {
     local v
-    v=$(sed -n "s/^[[:space:]]*$1[[:space:]]*=[[:space:]]*\([^;[:space:]]*\).*/\1/p" "$CONFIG_FILE" 2>/dev/null | tail -n 1)
+    v=$(sed -n "s/^[[:space:]]*$1[[:space:]]*=[[:space:]]*\([^;]*\).*/\1/p" "$CONFIG_FILE" 2>/dev/null | tail -n 1)
+    v=${v%"${v##*[![:space:]]}"}  # trim trailing spaces
     printf '%s' "${v:-$2}"
 }
 
 THIS_PC=$(ini ThisPC 15)
 OTHER=$(ini Other 17)
 BUS=$(ini Bus "")
+MONITOR=$(ini Monitor "")
 
 fail() {
     echo "upsidedown: $1" >&2
@@ -45,6 +47,26 @@ ddc() {
     else
         ddcutil --display 1 "$@"
     fi
+}
+
+# The monitor's bus number can change after a driver or kernel update. Find it again
+# by its identity (or, with only one monitor, take that one) and save the new bus.
+# Slow (~1 s), so it only runs when the saved bus stops answering.
+find_monitor() {
+    local found
+    found=$(ddcutil detect --terse 2>/dev/null | awk -v id="$MONITOR" '
+        /^Display [0-9]+/ { inside = 1; bus = ""; next }
+        /^[^ \t]/         { inside = 0 }
+        inside && /I2C bus:/ { bus = $NF; sub(/.*i2c-/, "", bus) }
+        inside && /Monitor:/ {
+            sub(/^[ \t]*Monitor:[ \t]*/, "")
+            if (bus != "") { n++; if (id == "" || $0 == id) hit = bus }
+        }
+        END { if (hit != "" && (id != "" || n == 1)) print hit }')
+    [[ -n $found && $found != "$BUS" ]] || return 1
+    BUS=$found
+    [[ -f $CONFIG_FILE ]] && sed -i "s/^\([[:space:]]*Bus[[:space:]]*=\).*/\1$BUS/" "$CONFIG_FILE"
+    return 0
 }
 
 read_input() {
@@ -72,13 +94,15 @@ set_input() {
 flip() {
     local cur target
     # Assume we're on this PC when the monitor doesn't answer and we have no history.
-    cur=$(read_input) || cur=$(cat "$STATE_FILE" 2>/dev/null) || cur=$THIS_PC
+    cur=$(read_input) || { find_monitor && cur=$(read_input); } ||
+        cur=$(cat "$STATE_FILE" 2>/dev/null) || cur=$THIS_PC
     if [[ $cur == "$THIS_PC" ]]; then target=$OTHER; else target=$THIS_PC; fi
     switch_to "$target"
 }
 
 switch_to() {
-    set_input "$1" || fail "Your monitor didn't answer. Is DDC/CI turned on in its on-screen menu?"
+    set_input "$1" || { find_monitor && set_input "$1"; } ||
+        fail "Your monitor didn't answer. Is DDC/CI turned on in its on-screen menu? If you changed monitors or cables, run install.sh again."
     echo "$1" > "$STATE_FILE"
     # Some monitors drop a command mid-switch; check once more and resend.
     # Re-read the state file so a quick second flip isn't undone.
@@ -100,7 +124,7 @@ case "${1:-flip}" in
         echo "Config:  $CONFIG_FILE"
         echo "This PC: input $THIS_PC"
         echo "Other:   input $OTHER"
-        if [[ -n $BUS ]]; then echo "Monitor: I2C bus $BUS"; else echo "Monitor: display 1"; fi
+        if [[ -n $BUS ]]; then echo "Monitor: ${MONITOR:-?} on I2C bus $BUS"; else echo "Monitor: display 1"; fi
         if cur=$(read_input); then echo "Now on:  input $cur"; else echo "Now on:  (monitor didn't answer)"; fi ;;
     config)
         exec "${VISUAL:-${EDITOR:-xdg-open}}" "$CONFIG_FILE" ;;

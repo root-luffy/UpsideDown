@@ -170,7 +170,9 @@ Hotkey=^F12    ; ^ Ctrl   ! Alt   + Shift   # Win
 ```
 
 On Linux, it's `~/.config/upsidedown/config.ini`. It has `ThisPC` and `Other` too, plus `Bus`
-(the monitor's I2C bus). Changes apply the next time you press the hotkey. To change the hotkey
+(the monitor's I2C bus) and `Monitor` (its maker, model and serial). Linux can renumber I2C buses
+after a driver or kernel update; when that happens, UpsideDown finds the monitor again by `Monitor`
+and updates `Bus` itself. Changes apply the next time you press the hotkey. To change the hotkey
 itself, use your desktop's keyboard settings or run `install.sh` again.
 
 ### Input codes

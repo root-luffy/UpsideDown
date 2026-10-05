@@ -99,7 +99,9 @@ ok "Found $(ddcutil --version 2>/dev/null | head -n 1)"
 
 step "Talking to your monitor (DDC/CI)"
 
-# Prints "bus<TAB>model" for each display ddcutil can talk to.
+# Prints "bus<TAB>model<TAB>id" for each display ddcutil can talk to, where id is
+# ddcutil's "maker:model:serial". The switcher uses the id to find the monitor again
+# if its bus number changes.
 detect() {
     ddcutil detect --terse 2>/dev/null | awk '
         /^Display [0-9]+/ { inside = 1; bus = ""; next }
@@ -108,7 +110,7 @@ detect() {
         inside && /Monitor:/ {
             sub(/^[ \t]*Monitor:[ \t]*/, ""); n = split($0, p, ":")
             model = (n >= 2 && p[2] != "") ? p[2] : $0
-            if (bus != "") print bus "\t" model
+            if (bus != "") print bus "\t" model "\t" $0
         }'
 }
 
@@ -146,16 +148,18 @@ if [[ -z $BUS ]]; then
     if (( ${#displays[@]} > 1 )); then
         echo "  Found more than one monitor:"
         for i in "${!displays[@]}"; do
-            printf '  [%d] %s  (I2C bus %s)\n' $(( i + 1 )) "${displays[i]#*$'\t'}" "${displays[i]%%$'\t'*}"
+            IFS=$'\t' read -r b m _ <<<"${displays[i]}"
+            printf '  [%d] %s  (I2C bus %s)\n' $(( i + 1 )) "$m" "$b"
         done
         while :; do
             pick=$(ask "Which one should UpsideDown flip? [1-${#displays[@]}]")
             [[ $pick =~ ^[0-9]+$ ]] && (( pick >= 1 && pick <= ${#displays[@]} )) && break
         done
     fi
-    BUS="${displays[pick-1]%%$'\t'*}"
-    ok "Monitor: ${displays[pick-1]#*$'\t'} (I2C bus $BUS)"
+    IFS=$'\t' read -r BUS model MONITOR_ID <<<"${displays[pick-1]}"
+    ok "Monitor: $model (I2C bus $BUS)"
 else
+    MONITOR_ID=$(detect | awk -F '\t' -v b="$BUS" '$1 == b { print $3; exit }')
     ok "Monitor: I2C bus $BUS"
 fi
 
@@ -264,6 +268,10 @@ Other=$OTHER
 
 ; I2C bus of the monitor to flip (the N in /dev/i2c-N, see 'ddcutil detect').
 Bus=$BUS
+
+; The monitor's identity (maker:model:serial). If its bus number changes after a
+; driver or kernel update, UpsideDown finds it again by this and updates Bus.
+Monitor=$MONITOR_ID
 EOF
 
 cat > "$APP_DIR/upsidedown.desktop" <<EOF
